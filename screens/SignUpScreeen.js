@@ -13,7 +13,7 @@ export default class SignUpScreen extends Component{
     }
 
     userLogin=(emailId,password)=>{
-        firebase.auth().signInWithEmailAndPassword(email,password)
+        firebase.auth().signInWithEmailAndPassword(emailId,password)
         .then(()=>{
             return alert("Successfull Login")
         })
