@@ -38,15 +38,18 @@ keyExtractor = (item, index) => index.toString()
 
 renderItem = ({item,i}) => {
     return (
-        <ListItem 
+        <ListItem >
         key= {i}
-        title={item.item}
-        subtitle={item.description}
-        titleStyle={{color: 'black', fontWeight: 'bold'}}
-        rightElement={<TouchableOpacity style={styles.button}>
+        <ListItem.Content>
+        <ListItem.Title>{item.item}</ListItem.Title>
+        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+        <ListItem.RightElement>{<TouchableOpacity style={styles.button}>
         <Text style={{color:'black',fontSize: 20}}>VIEW ITEM</Text>
-      </TouchableOpacity>} bottomDivider
-        />
+      </TouchableOpacity>} 
+      </ListItem.RightElement>
+      bottomDivider
+      </ListItem.Content>
+      </ListItem>
     )
 }
 

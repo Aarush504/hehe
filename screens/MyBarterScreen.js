@@ -31,20 +31,23 @@ export default class MyBartersScreen extends Component {
    keyExtractor = (item, index) => index.toString()
 
    renderItem = ( {item, i} ) =>(
-     <ListItem
+     <ListItem>
        key={i}
-       title={item.item_name}
-       subtitle={"Requested By : " + item.requested_by +"\nStatus : " + item.request_status}
-       leftElement={<Icon name="book" type="font-awesome" color ='#696969'/>}
-       titleStyle={{ color: 'black', fontWeight: 'bold' }}
-       rightElement={
+       <ListItem.Content>
+       <ListItem.Title>{item.item_name}</ListItem.Title>
+       <ListItem.Subtitle>{"Requested By : " + item.requested_by +"\nStatus : " + item.request_status}</ListItem.Subtitle>
+      <ListItem.LeftElement>{<Icon name="book" type="font-awesome" color ='#696969'/>}</ListItem.LeftElement>
+       <ListItem.RightElement>
            <TouchableOpacity style={styles.button}>
              <Text style={{color:'#ffff'}}>Exchange</Text>
            </TouchableOpacity>
-         }
+           </ListItem.RightElement>
        bottomDivider
-     />
+       </ListItem.Content>
+       </ListItem>
    )
+    
+   
 
 
    componentDidMount(){

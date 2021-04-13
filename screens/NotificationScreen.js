@@ -47,14 +47,15 @@ export default class NotificationScreen extends Component{
 
   renderItem = ({item,index}) =>{
       return (
-        <ListItem
+        <ListItem>
           key={index}
-          leftElement={<Icon name="book" type="font-awesome" color ='#696969'/>}
-          title={item.item_name}
-          titleStyle={{ color: 'black', fontWeight: 'bold' }}
-          subtitle={item.message}
+          <ListItem.Content>
+          <ListItem.LeftElement>{<Icon name="book" type="font-awesome" color ='#696969'/>}</ListItem.LeftElement>
+          <ListItem.Title>{item.item_name}</ListItem.Title>
+          <ListItem.Subtitle>{item.message}</ListItem.Subtitle>
           bottomDivider
-        />
+          </ListItem.Content>
+          </ListItem>
       )
  }
 
