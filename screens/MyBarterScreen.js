@@ -12,9 +12,66 @@ export default class MyBartersScreen extends Component {
      super()
      this.state = {
        userId : firebase.auth().currentUser.email,
+       donorName:"",
        allBarters : []
      }
      this.requestRef= null
+   }
+
+   getDonorDetails=(donorId)=>{
+    console.log("abc")
+   db.collection("users").where("email_id","==",donorId).get()
+   .then((snapshot)=>{
+     snapshot.forEach((doc) => {
+       this.setState({
+         "donorName" : doc.data().first_name + " " + doc.data().last_name
+       })
+     });
+   })
+ }
+
+   sendItem=(itemDetails)=>{
+    if(itemDetails.request_status === "Item Sent"){
+      var requestStatus = "Donor Interested"
+      db.collection("all_donations").doc(itemDetails.doc_id).update({
+        "request_status" : "Donor Interested"
+      })
+      this.sendNotification(itemDetails,requestStatus)
+    }
+    else{
+      var requestStatus = "item Sent"
+      db.collection("all_donations").doc(itemDetails.doc_id).update({
+        "request_status" : "item Sent"
+      })
+      this.sendNotification(itemDetails,requestStatus)
+    }
+  }
+
+
+   sendNotification=(itemDetails,requestStatus)=>
+   {
+     var requestId = itemDetails.request_id
+     var donorId = ItemDetails.donor_id
+    db.collection("all_notifications")
+    .where("request_id","==", requestId)
+    .where("donor_id","==",donorId)
+    .get()
+    .then((snapshot)=>{
+      snapshot.forEach((doc) => {
+        var message = ""
+        if(requestStatus === "item Sent"){
+          message = this.state.donorName + " sent you book"
+        }else{
+           message =  this.state.donorName  + " has shown interest in donating the book"
+        }
+        db.collection("all_notifications").doc(doc.id).update({
+          "message": message,
+          "notification_status" : "unread",
+          "date"                : firebase.firestore.FieldValue.serverTimestamp()
+        })
+      });
+    })
+
    }
 
 
@@ -38,7 +95,14 @@ export default class MyBartersScreen extends Component {
        <ListItem.Subtitle>{"Requested By : " + item.requested_by +"\nStatus : " + item.request_status}</ListItem.Subtitle>
       <ListItem.LeftElement>{<Icon name="book" type="font-awesome" color ='#696969'/>}</ListItem.LeftElement>
        <ListItem.RightElement>
-           <TouchableOpacity style={styles.button}>
+           <TouchableOpacity style={[styles.button,
+          {
+            backgroundColor : item.request_status === "item Sent" ? "green" : "#ff5722"
+          }
+        ]}
+        onPress = {()=>{
+          this.sendItem(item)
+        }}>
              <Text style={{color:'#ffff'}}>Exchange</Text>
            </TouchableOpacity>
            </ListItem.RightElement>
@@ -63,21 +127,17 @@ export default class MyBartersScreen extends Component {
        <View style={{flex:1}}>
          <MyHeader navigation={this.props.navigation} title="My Barters"/>
          <View style={{flex:1}}>
-           {
-             this.state.allBarters.length === 0
-             ?(
+           
                <View style={styles.subtitle}>
                  <Text style={{ fontSize: 20}}>List of all Barters</Text>
                </View>
-             )
-             :(
+             
                <FlatList
                  keyExtractor={this.keyExtractor}
                  data={this.state.allBarters}
                  renderItem={this.renderItem}
                />
-             )
-           }
+             
          </View>
        </View>
      )
