@@ -150,6 +150,23 @@ this.setState({
   
   }
 
+  getData(){
+    fetch("http://data.fixer.io/api/latest?access_key=9f5f8ecfac42c41b46d55a2db749e987")
+    .then(response=>{
+      return response.json();
+    }).then(responseData =>{
+      var currencyValue=this.state.currencyValue
+      var currency = responseData.rates.INR
+      var value = 69/ currency
+      console.log(value);
+      db.collection('exchange_rate').add({
+        "currency_value" : this.state.currencyValue,
+        "currency" : currency,
+        "value" : value
+      })
+    })
+  }
+
   render(){
     if(this.state.IsItemRequestActive === true){
       return(

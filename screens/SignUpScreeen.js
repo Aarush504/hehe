@@ -15,6 +15,7 @@ export default class SignUpScreen extends Component{
         contact:'',
         confirmPassword:'',
         isModalVisible:'false',
+        currencyValue:''
         }
     }
 
@@ -41,7 +42,8 @@ export default class SignUpScreen extends Component{
             last_name: this.state.lastName,
             contact:this.state.contact,
             email_id:this.state.emailId,
-            address:this.state.address
+            address:this.state.address,
+            currencyValue: this.state.currencyValue
             })
             return alert("User Added Successfully",
             ' ',
@@ -145,6 +147,16 @@ secureTextEntry={true}
 onChangeText={(text)=>{
     this.setState({
         confirmPassword:text
+    })
+}}
+/>
+
+<TextInput
+placeholder = {"Country currency code"}
+maxLength = {8}
+onChangeText = {(text)=>{
+    this.setState({
+        currencyValue: text
     })
 }}
 />

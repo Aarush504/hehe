@@ -18,7 +18,10 @@ export default class ReceiverDetailsScreen extends Component{
       receiverName    : '',
       receiverContact : '',
       receiverAddress : '',
-      receiverRequestDocId : ''
+      receiverRequestDocId : '',
+      currencyValue:'',
+      currency:'',
+      value:''
     }
   }
 
@@ -81,11 +84,25 @@ updateBarterStatus=()=>{
     })
   }
 
+  getCurrency(){
+    db.collection('exchange_rate').get()
+    .then(snapshot=>{
+      snapshot.forEach(doc =>{
+        this.setState({
+          currencyValue:doc.data().currency_value,
+          currency: doc.data().currency,
+          value: doc.data().value
+        })
+      })
+    })
+  }
+
 
 
 componentDidMount(){
   this.getreceiverDetails()
   this.getUserDetails(this.state.userId)
+  this.getCurrency()
 }
 
 
@@ -125,6 +142,9 @@ componentDidMount(){
             </Card>
             <Card>
               <Text style={{fontWeight:'bold'}}>Address: {this.state.receiverAddress}</Text>
+            </Card>
+            <Card>
+              <Text style={{fontWeight:'bold'}}>currency: {this.state.value}</Text>
             </Card>
           </Card>
         </View>
