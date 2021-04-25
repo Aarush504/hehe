@@ -5,6 +5,10 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import {DrawerItems} from 'react-navigation-drawer';
 import firebase from 'firebase';
+import db from '../config';
+import axios from 'axios';
+import {Icon} from 'react-native-elements';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class CustomSideBarMenu extends Component{
     state={
@@ -101,6 +105,12 @@ export default class CustomSideBarMenu extends Component{
                         firebase.auth().signOut()
                     }}
                     >
+                      <Icon
+            name="logout"
+            type='antdesign'
+            size={RFValue(20)}
+            iconStyle={{paddingLeft:RFValue(10)}}
+            />
                         <Text style={styles.logOutText}>Logout</Text>
                     </TouchableOpacity>
                 </View>
